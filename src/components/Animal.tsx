@@ -1,7 +1,13 @@
-export function Animal() {
+import { IAnimal } from "../models/IAnimal";
+
+interface IAnimalProps {
+  animal: IAnimal;
+}
+
+export function Animal(props: IAnimalProps) {
   return (
     <>
-      <p>Aminal works</p>
+      <div>{props.animal.name}</div>
     </>
   );
 }

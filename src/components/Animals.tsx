@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { IAnimal } from "../models/IAnimal";
+import { Animal } from "./Animal";
 
 export function Animals() {
   const [animals, setAnimals] = useState<IAnimal[]>([]);
@@ -14,15 +15,8 @@ export function Animals() {
   }, []);
 
   let animalsList = animals.map((animal: IAnimal) => {
-    return (
-      <div key={animal.name}>{animal.name}</div>
-      //Ändra key till id
-    );
+    return <Animal key={animal.id} animal={animal}></Animal>;
   });
 
-  return (
-    <>
-      <p>{animalsList}</p>
-    </>
-  );
+  return <>{animalsList}</>;
 }
