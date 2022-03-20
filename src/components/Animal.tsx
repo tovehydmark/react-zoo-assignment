@@ -7,7 +7,11 @@ interface IAnimalProps {
 export function Animal(props: IAnimalProps) {
   return (
     <>
-      <div>{props.animal.name}</div>
+      <div>
+        <h1>{props.animal.name}</h1>
+        <p>{props.animal.shortDescription}</p>
+        <button>Visa mer info om {props.animal.name}</button>
+      </div>
     </>
   );
 }
