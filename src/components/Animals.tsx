@@ -13,9 +13,16 @@ export function Animals() {
       });
   }, []);
 
+  let animalsList = animals.map((animal: IAnimal) => {
+    return (
+      <div key={animal.name}>{animal.name}</div>
+      //Ändra key till id
+    );
+  });
+
   return (
     <>
-      <p>Aminals works</p>
+      <p>{animalsList}</p>
     </>
   );
 }
