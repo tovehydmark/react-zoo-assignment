@@ -7,8 +7,8 @@ import { Animals } from "./components/Animals";
 function App() {
   return (
     <div className="App">
-      <Animal></Animal>
       <Animals></Animals>
+      <Animal></Animal>
     </div>
   );
 }
