@@ -1,12 +1,16 @@
+import { useState } from "react";
 import { IAnimal } from "../models/IAnimal";
+import { AnimalInfo } from "./AnimalInfo";
 
 interface IAnimalProps {
   animal: IAnimal;
 }
 
 export function Animal(props: IAnimalProps) {
+  const [animalId, setAnimalId] = useState<number>(0);
+
   function showAnimalInfo(id: number) {
-    console.log(id);
+    setAnimalId(id);
   }
 
   return (
@@ -22,6 +26,7 @@ export function Animal(props: IAnimalProps) {
           Visa mer info om {props.animal.name}
         </button>
       </div>
+      <AnimalInfo id={animalId}></AnimalInfo>
     </>
   );
 }

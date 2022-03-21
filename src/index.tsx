@@ -5,16 +5,14 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Animals } from "./components/Animals";
+import { AnimalInfo } from "./components/AnimalInfo";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Animals />}></Route>
-        <Route
-          path="
-        "
-        ></Route>
+        {/* <Route path="/info" element={<AnimalInfo id={0} />}></Route> */}
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

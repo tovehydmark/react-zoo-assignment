@@ -4,8 +4,6 @@ interface IAnimalInfoProps {
 
 export function AnimalInfo(props: IAnimalInfoProps) {
   return (
-    <>
-      <div>hej</div>
-    </>
+    <>{<div>Animal-Id från förälderkomponenten Animal = {props.id}</div>}</>
   );
 }
