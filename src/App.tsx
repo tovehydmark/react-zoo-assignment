@@ -7,11 +7,7 @@ import { IAnimal } from "./models/IAnimal";
 
 function App() {
   // let animalFromApp:IAnimal = {}
-  return (
-    <div className="App">
-      <Animals></Animals>
-    </div>
-  );
+  return <div className="App"></div>;
 }
 
 export default App;
