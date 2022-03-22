@@ -21,12 +21,12 @@ export function Animals() {
   let animalsList = animals.map((animal: IAnimal) => {
     let animalLink = `/animal-info/${animal.id}`;
     return (
-      <>
-        <Animal animal={animal} key={animal.latinName}></Animal>
+      <div key={animal.latinName}>
+        <Animal animal={animal}></Animal>
         <button key={animal.id}>
           <Link to={animalLink}>{animal.name}</Link>
         </button>
-      </>
+      </div>
     );
   });
 
