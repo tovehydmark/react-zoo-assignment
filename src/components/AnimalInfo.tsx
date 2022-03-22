@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { IAnimal } from "../models/IAnimal";
+import { getAnimalService } from "../services/getAnimalService";
 
 interface IAnimalInfoProps {
   id: number;
@@ -12,11 +13,12 @@ export function AnimalInfo(props: IAnimalInfoProps) {
   const [feed, setFeed] = useState<boolean>(false);
 
   useEffect(() => {
-    axios
-      .get<IAnimal[]>(`https://animals.azurewebsites.net/api/animals`)
-      .then((response) => {
+    let animalsInLs: string = localStorage.getItem("animalList") || "[]";
+    if (animalsInLs == "[]") {
+      getAnimalService().then((response) => {
         setAnimals(response.data);
       });
+    }
   }, []);
 
   function hasBeenFed() {

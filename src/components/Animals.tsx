@@ -1,18 +1,21 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { IAnimal } from "../models/IAnimal";
 import { Animal } from "./Animal";
+import { getAnimalService } from "../services/getAnimalService";
 
 export function Animals() {
   const [animals, setAnimals] = useState<IAnimal[]>([]);
 
   useEffect(() => {
-    axios
-      .get<IAnimal[]>(`https://animals.azurewebsites.net/api/animals`)
-      .then((response) => {
+    let animalsInLs: string = localStorage.getItem("animalList") || "[]";
+    if (animalsInLs == "[]") {
+      getAnimalService().then((response) => {
         setAnimals(response.data);
       });
+    }
   }, []);
+
+  localStorage.setItem("animalList", JSON.stringify(animals));
 
   let animalsList = animals.map((animal: IAnimal) => {
     return <Animal key={animal.id} animal={animal}></Animal>;
