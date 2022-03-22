@@ -6,13 +6,16 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Animals } from "./components/Animals";
 import { AnimalInfo } from "./components/AnimalInfo";
+import { Layout } from "./components/Layout";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Animals />}></Route>
-        {/* <Route path="/info" element={<AnimalInfo id={0} />}></Route> */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Animals />}></Route>
+          <Route path="/animal-info/:id" element={<AnimalInfo />}></Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

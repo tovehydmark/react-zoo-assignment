@@ -26,7 +26,7 @@ export function Animal(props: IAnimalProps) {
           Visa mer info om {props.animal.name}
         </button>
       </div>
-      <AnimalInfo id={animalId}></AnimalInfo>
+      {/* <AnimalInfo id={animalId}></AnimalInfo> */}
     </>
   );
 }

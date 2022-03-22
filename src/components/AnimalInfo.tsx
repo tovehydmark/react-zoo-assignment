@@ -1,19 +1,29 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Animal } from "../models/Animal";
 import { IAnimal } from "../models/IAnimal";
 import { getAnimalService } from "../services/getAnimalService";
 
-interface IAnimalInfoProps {
-  id: number;
-}
-
-export function AnimalInfo(props: IAnimalInfoProps) {
+export function AnimalInfo() {
   const [animals, setAnimals] = useState<IAnimal[]>([]);
+  const [animalId, setAnimalId] = useState<number>(0);
+  let params = useParams();
 
   const [feed, setFeed] = useState<boolean>(false);
 
+  //Här blir animalId samma som det vi klickat på
+  useEffect(() => {
+    if (params.id) {
+      setAnimalId(+params.id);
+    }
+  }, []);
+
+  //Här kollar vi om info finns i LS, annars hämtar vi från API
   useEffect(() => {
     let animalsInLs: string = localStorage.getItem("animalList") || "[]";
+
+    setAnimals(JSON.parse(animalsInLs));
     if (animalsInLs == "[]") {
       getAnimalService().then((response) => {
         setAnimals(response.data);
@@ -26,25 +36,25 @@ export function AnimalInfo(props: IAnimalInfoProps) {
     console.log(feed);
   }
 
-  let animalsList = animals.map((animal: IAnimal) => {
-    if (animal.id === props.id) {
-      return (
-        <div key={animal.id}>
-          <h1>{animal.name}</h1>
-          <p>Latin-namn: {animal.latinName}</p>
-          <p>Födelsedag: {animal.yearOfBirth}</p>
-          <p>{animal.longDescription}</p>
-          <img src={animal.imageUrl} alt="" width={100} height={100} />
+  let animalList = animals.filter((animal) => animal.id === animalId);
 
-          <button onClick={hasBeenFed}>Mata</button>
-        </div>
-      );
-    }
+  let animalToPrint = animalList.map((animal: IAnimal) => {
+    return (
+      <div key={animal.latinName}>
+        <h1>{animal.name}</h1>
+        <p>Latin-namn: {animal.latinName}</p>
+        <p>Födelsedag: {animal.yearOfBirth}</p>
+        <p>{animal.longDescription}</p>
+        <img src={animal.imageUrl} alt="" width={100} height={100} />
+        <button onClick={hasBeenFed}>Mata</button>
+      </div>
+    );
   });
+
   return (
     <>
-      {<div>Animal-Id från förälderkomponenten Animal = {props.id}</div>}
-      {animalsList}
+      {<div>Animal-Id från förälderkomponenten Animal = {animalId} </div>}
+      {animalToPrint}
     </>
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { IAnimal } from "../models/IAnimal";
 import { Animal } from "./Animal";
 import { getAnimalService } from "../services/getAnimalService";
+import { Link } from "react-router-dom";
 
 export function Animals() {
   const [animals, setAnimals] = useState<IAnimal[]>([]);
@@ -18,7 +19,15 @@ export function Animals() {
   localStorage.setItem("animalList", JSON.stringify(animals));
 
   let animalsList = animals.map((animal: IAnimal) => {
-    return <Animal key={animal.id} animal={animal}></Animal>;
+    let animalLink = `/animal-info/${animal.id}`;
+    return (
+      <>
+        <Animal animal={animal} key={animal.latinName}></Animal>
+        <button key={animal.id}>
+          <Link to={animalLink}>{animal.name}</Link>
+        </button>
+      </>
+    );
   });
 
   return <>{animalsList}</>;
