@@ -10,14 +10,15 @@ export function Animals() {
   //Hämtar data från local storage. Om data inte finns triggas funktionen i service, som då hämtar data
   useEffect(() => {
     let animalsInLs: string = localStorage.getItem("animalList") || "[]";
+
+    setAnimals(JSON.parse(animalsInLs));
+
     if (animalsInLs == "[]") {
       getAnimalService().then((response) => {
         setAnimals(response.data);
       });
     }
   }, []);
-
-  localStorage.setItem("animalList", JSON.stringify(animals));
 
   let animalsList = animals.map((animal: IAnimal) => {
     let animalLink = `/animal-info/${animal.id}`;
