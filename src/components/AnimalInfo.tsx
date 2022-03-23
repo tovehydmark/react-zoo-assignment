@@ -8,7 +8,10 @@ export function AnimalInfo() {
   const [animalId, setAnimalId] = useState<number>(0);
   let params = useParams();
 
-  const [feed, setFeed] = useState<boolean>(false);
+  const [isAnimalFed, setIsAnimalFed] = useState<boolean>(false);
+  const [timeWhenFeedingAnimal, setTimeWhenFeedingAnimal] = useState<Date>();
+
+  const [feedingTime, setFeedingTime] = useState("");
 
   //Här blir animalId samma som det vi klickat på
   useEffect(() => {
@@ -30,9 +33,15 @@ export function AnimalInfo() {
   }, []);
 
   function hasBeenFed() {
-    setFeed(!feed);
-    console.log(feed);
+    setIsAnimalFed(!isAnimalFed);
+    setTimeWhenFeedingAnimal(new Date());
   }
+
+  useEffect(() => {
+    if (isAnimalFed) {
+      setFeedingTime(JSON.stringify(setTimeWhenFeedingAnimal));
+    }
+  }, []);
 
   let animalList = animals.filter((animal) => animal.id === animalId);
 
@@ -44,10 +53,28 @@ export function AnimalInfo() {
         <p>Födelsedag: {animal.yearOfBirth}</p>
         <p>{animal.longDescription}</p>
         <img src={animal.imageUrl} alt="" width={100} height={100} />
-        <button onClick={hasBeenFed}>Mata</button>
+        <button onClick={hasBeenFed} disabled={isAnimalFed}>
+          Mata
+        </button>
+        <div>
+          {" "}
+          {isAnimalFed && (
+            <p>
+              {animal.name} matades senast klockan
+              {timeWhenFeedingAnimal?.getHours()}:
+              {timeWhenFeedingAnimal?.getMinutes()}
+            </p>
+          )}
+        </div>
       </div>
     );
   });
 
   return <>{animalToPrint}</>;
 }
+
+//if current-time > time of animal fed {
+//   fedbutton unclickable
+// } else (
+//   time of animal fed nollställs and button is clickable again
+// )
