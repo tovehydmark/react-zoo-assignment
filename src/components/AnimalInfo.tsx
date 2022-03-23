@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Animal } from "../models/Animal";
 import { IAnimal } from "../models/IAnimal";
 import { getAnimalService } from "../services/getAnimalService";
 

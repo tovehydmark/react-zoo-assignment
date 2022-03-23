@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 export function Animals() {
   const [animals, setAnimals] = useState<IAnimal[]>([]);
 
+  //Hämtar data från local storage. Om data inte finns triggas funktionen i service, som då hämtar data
   useEffect(() => {
     let animalsInLs: string = localStorage.getItem("animalList") || "[]";
     if (animalsInLs == "[]") {
@@ -23,8 +24,9 @@ export function Animals() {
     return (
       <div key={animal.latinName}>
         <Animal animal={animal}></Animal>
+
         <button key={animal.id}>
-          <Link to={animalLink}>{animal.name}</Link>
+          <Link to={animalLink}>Visa mer information om {animal.name}</Link>
         </button>
       </div>
     );
