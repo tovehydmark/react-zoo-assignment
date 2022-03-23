@@ -20,6 +20,9 @@ export function Animals() {
     }
   }, []);
 
+  localStorage.setItem("animalList", JSON.stringify(animals));
+
+  //mMappar igenom animalList och ger varje animal en länk
   let animalsList = animals.map((animal: IAnimal) => {
     let animalLink = `/animal-info/${animal.id}`;
     return (

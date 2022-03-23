@@ -20,19 +20,15 @@ export function AnimalInfo() {
     }
   }, []);
 
-  //Testa med minuter istället för att se att beräkningen funkar!
-
   //Här kollar vi om info finns i LS, annars hämtar vi från API
+  let animalsInLs: string = localStorage.getItem("animalList") || "[]";
   useEffect(() => {
-    let animalsInLs: string = localStorage.getItem("animalList") || "[]";
-
-    setAnimals(JSON.parse(animalsInLs));
-
     if (animalsInLs == "[]") {
       getAnimalService().then((response) => {
         setAnimals(response.data);
       });
     }
+    setAnimals(JSON.parse(animalsInLs));
   }, []);
 
   useEffect(() => {
@@ -40,9 +36,9 @@ export function AnimalInfo() {
   }, [currentTime]);
 
   function hasBeenFed() {
-    setIsAnimalFed(!isAnimalFed);
     setTimeAnimalWasFed(new Date().getTime());
     setFeedingTime(new Date());
+    setIsAnimalFed(true);
 
     checkTime();
   }
@@ -50,14 +46,14 @@ export function AnimalInfo() {
   //Här kollar vi ifall det gått mer än 4 timmar sedan djuret matats
   function checkTime() {
     if (timeAnimalWasFed / 1000 <= currentTime / 1000 + 4) {
+      //Testa med minuter istället för att se att beräkningen funkar!
+
       const animalsFromLS = localStorage.getItem("animalList") || "[]";
 
       const updateAnimalsFromLS: IAnimal[] = JSON.parse(animalsFromLS).map(
         (animal: IAnimal) => {
           if (animal.id === animalId) {
             return { ...animal, isFed: "true" };
-          } else {
-            return { ...animal, isFed: "false" };
           }
         }
       );
@@ -80,7 +76,6 @@ export function AnimalInfo() {
           Mata
         </button>
         <div>
-          {" "}
           {isAnimalFed && (
             <p>
               {animal.name} matades senast klockan
