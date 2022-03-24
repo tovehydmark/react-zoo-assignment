@@ -13,14 +13,17 @@ export function Animals() {
 
     setAnimals(JSON.parse(animalsInLs));
 
-    if (animalsInLs == "[]") {
+    if (animalsInLs === "[]") {
       getAnimalService().then((response) => {
         setAnimals(response.data);
+        console.log("vafan");
       });
+    } else {
+      console.log("här då");
     }
   }, []);
 
-  localStorage.setItem("animalList", JSON.stringify(animals));
+  // localStorage.setItem("animalList", JSON.stringify(animals));
 
   //mMappar igenom animalList och ger varje animal en länk
   let animalsList = animals.map((animal: IAnimal) => {

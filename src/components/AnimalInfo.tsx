@@ -40,14 +40,18 @@ export function AnimalInfo() {
   }, [currentTime]);
 
   function hasBeenFed() {
+    let updateAnimalList: IAnimal[] = [];
+
     let animal = animals.find((animal) => {
       if (animal.id === animalId) {
         setIsAnimalFed(!isAnimalFed);
         animal.isFed = true;
         animal.lastFed = JSON.stringify(new Date());
       }
-      localStorage.setItem("animalList", JSON.stringify(animal));
-      console.log(animal);
+      updateAnimalList.push(animal);
+
+      localStorage.setItem("animalList", JSON.stringify(updateAnimalList));
+      console.log(JSON.stringify([animal]));
     });
 
     setTimeAnimalWasFed(new Date().getTime());
