@@ -9,8 +9,8 @@ export function AnimalInfo() {
   let params = useParams();
 
   const [isAnimalFed, setIsAnimalFed] = useState<boolean>(false);
-  const [timeAnimalWasFed, setTimeAnimalWasFed] = useState<number>(0); //För att beräkna tiden från djuret matats till nuvarande tid
-  const [feedingTime, setFeedingTime] = useState<Date>(); //För att kunna skriva ut info om när djuret matats
+  const [timeAnimalWasFed, setTimeAnimalWasFed] = useState<number>(0); //För att enkelt beräkna tiden från djuret matats till nuvarande tid, satt i millisekunder
+  // const [feedingTime, setFeedingTime] = useState<string>(""); //För att kunna skriva ut info om när djuret matats
   const [currentTime, setCurrentTime] = useState<number>(0);
 
   //Här får animalId samma värde som id:t på djuret vi klickat på
@@ -35,17 +35,20 @@ export function AnimalInfo() {
   }, []);
 
   useEffect(() => {
-    animals.find((animal) => {
-      // if (JSON.stringify(feedingTime)) {
-      //   console.log(feedingTime);
+    setCurrentTime(new Date().getMilliseconds());
 
-      //   // if (feedingTime?.getDate() >= currentTime) {
-      //   //   console.log("halloj");
-      //   // }
-      // }
+    let current = Math.floor(currentTime / (1000 * 60 * 60));
+
+    if (current > timeAnimalWasFed + 3) {
+      console.log("current time is larger than time animal was fed");
+      //Varför kommer jag in här?? tycker inte att current borde vara större än timeAnimalWasFed
+    }
+  }, [animals]);
+
+  useEffect(() => {
+    animals.find((animal) => {
       if (animal.id === animalId && animal.isFed === true) {
         setIsAnimalFed(!isAnimalFed);
-        console.log(isAnimalFed);
       } else {
       }
     });
@@ -57,86 +60,57 @@ export function AnimalInfo() {
 
   //Updates list in local storage, changing isFed and lastFed
   function feedAnimal() {
-    let updateAnimalList: IAnimal[] = [];
+    let updateAnimalListWhenFed: IAnimal[] = [];
 
     animals.find((animal) => {
       if (animal.id === animalId) {
         setIsAnimalFed(!isAnimalFed);
         animal.isFed = true;
-        animal.lastFed = JSON.stringify(
-          new Date().getHours() + ":" + JSON.stringify(new Date().getMinutes())
-        );
+        animal.lastFed = JSON.stringify(new Date());
       }
-      updateAnimalList.push(animal);
+      let animalFeedingTime = new Date().getMilliseconds();
+      let timeAnimalWasFed = Math.floor(animalFeedingTime / (1000 * 60 * 60));
 
-      localStorage.setItem("animalList", JSON.stringify(updateAnimalList));
+      setTimeAnimalWasFed(timeAnimalWasFed);
+      console.log("time animal was fed: " + timeAnimalWasFed);
+
+      updateAnimalListWhenFed.push(animal);
+
+      localStorage.setItem(
+        "animalList",
+        JSON.stringify(updateAnimalListWhenFed)
+      );
     });
-
-    // setTimeAnimalWasFed(new Date().getTime());
-    setFeedingTime(new Date());
-    setIsAnimalFed(true);
   }
 
   //Filtrerar ut djuret vars information ska visas, via id samt skapar upp HTML för det
-  let animalList = animals.filter((animal) => animal.id === animalId);
-  let animalToPrint = animalList.map((animal: IAnimal) => {
-    return (
-      <div key={animal.latinName}>
-        <h1>{animal.name}</h1>
-        <p>Latin-namn: {animal.latinName}</p>
-        <p>Födelsedag: {animal.yearOfBirth}</p>
-        <p>{animal.longDescription}</p>
-        <img src={animal.imageUrl} alt="" width={100} height={100} />
-        <button onClick={feedAnimal} disabled={isAnimalFed}>
-          Mata
-        </button>
-        <div>
-          {isAnimalFed && (
-            <p>
-              {animal.name} matades senast klockan
-              {" " + JSON.parse(animal.lastFed)}
-            </p>
-          )}
+  let filterOutCurrentAnimal = animals.filter(
+    (animal) => animal.id === animalId
+  );
+  let animalInformationToPrint = filterOutCurrentAnimal.map(
+    (animal: IAnimal) => {
+      return (
+        <div key={animal.latinName}>
+          <h1>{animal.name}</h1>
+          <p>Latin-namn: {animal.latinName}</p>
+          <p>Födelsedag: {animal.yearOfBirth}</p>
+          <p>{animal.longDescription}</p>
+          <img src={animal.imageUrl} alt="" width={100} height={100} />
+          <button onClick={feedAnimal} disabled={isAnimalFed}>
+            Mata
+          </button>
+          <div>
+            {isAnimalFed && (
+              <p>
+                {animal.name} matades senast klockan
+                {" " + JSON.parse(animal.lastFed)}
+              </p>
+            )}
+          </div>
         </div>
-      </div>
-    );
-  });
+      );
+    }
+  );
 
-  return <>{animalToPrint}</>;
+  return <>{animalInformationToPrint}</>;
 }
-
-// //Här kollar vi ifall det gått mer än 3 timmar sedan djuret matats
-// function checkTime() {
-//   const animalsFromLS = localStorage.getItem("animalList") || "[]";
-
-//   // if (timeAnimalWasFed / 1000 <= currentTime / 1000 + 3) {
-//   //Testa med minuter istället för att se att beräkningen funkar!
-
-//   let updateAnimalsFromLS: IAnimal[] = JSON.parse(animalsFromLS).map(
-//     (animal: IAnimal) => {
-//       if (animal.id === animalId) {
-//         animal.isFed = true;
-//         return animal;
-//       }
-//     }
-//   );
-
-//   let animalsThatHaveEaten: string[] = [];
-//   animalsThatHaveEaten.push(JSON.stringify(animals));
-
-//   //Uppdaterar "isFed" till "true" om det gått mindre än 4 timmar
-//   localStorage.setItem("animalFed", JSON.stringify(animalsThatHaveEaten));
-//   // }
-// }
-
-// useEffect(() => {
-//   // let fedAnimalsFromLS = localStorage.getItem("fedAnimals") || "[]";
-//   // let fedAnimalsString: string[] = JSON.parse(fedAnimalsFromLS);
-//   // // setIsAnimalFed(true);
-
-//   // if (isAnimalFed === true) {
-//   //   //Ändra på denna ?? Så den tittar i LS för att se om animal id ligger där, och om ID ligger där så ska den sätta isAnimalFed === true så att knappen är utgråad. Om det gått mer ön 3 timmar ska isAnimalFed===false. Sen kanske den behöver ligga i en annan useEffect, eller bara ha en tom lista på slutet
-//   //   fedAnimalsString.push(JSON.stringify(animalId));
-//   // }
-//   // localStorage.setItem("fedAnimals", JSON.stringify(fedAnimalsString));
-// }, []);
