@@ -36,8 +36,16 @@ export function AnimalInfo() {
 
   useEffect(() => {
     animals.find((animal) => {
+      // if (JSON.stringify(feedingTime)) {
+      //   console.log(feedingTime);
+
+      //   // if (feedingTime?.getDate() >= currentTime) {
+      //   //   console.log("halloj");
+      //   // }
+      // }
       if (animal.id === animalId && animal.isFed === true) {
         setIsAnimalFed(!isAnimalFed);
+        console.log(isAnimalFed);
       } else {
       }
     });
@@ -55,7 +63,9 @@ export function AnimalInfo() {
       if (animal.id === animalId) {
         setIsAnimalFed(!isAnimalFed);
         animal.isFed = true;
-        animal.lastFed = JSON.stringify(new Date());
+        animal.lastFed = JSON.stringify(
+          new Date().getHours() + ":" + JSON.stringify(new Date().getMinutes())
+        );
       }
       updateAnimalList.push(animal);
 
@@ -84,7 +94,7 @@ export function AnimalInfo() {
           {isAnimalFed && (
             <p>
               {animal.name} matades senast klockan
-              {feedingTime?.getHours()}:{feedingTime?.getMinutes()}
+              {" " + JSON.parse(animal.lastFed)}
             </p>
           )}
         </div>
