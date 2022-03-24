@@ -21,11 +21,16 @@ export function AnimalInfo() {
   }, []);
 
   //Här kollar vi om info finns i LS, annars hämtar vi från API
-  let animalsInLs: string = localStorage.getItem("animalList") || "[]";
+
   useEffect(() => {
+    let animalsInLs: string = localStorage.getItem("animalList") || "[]";
+
     if (animalsInLs == "[]") {
+      //Hämtar API data via services
       getAnimalService().then((response) => {
         setAnimals(response.data);
+        //Sparar även till LS från API-anropet
+        localStorage.setItem("animalList", JSON.stringify(response.data));
       });
     }
     setAnimals(JSON.parse(animalsInLs));
@@ -40,27 +45,43 @@ export function AnimalInfo() {
     setFeedingTime(new Date());
     setIsAnimalFed(true);
 
-    checkTime();
+    // checkTime();
   }
+  useEffect(() => {
+    let fedAnimalsFromLS = localStorage.getItem("fedAnimals") || "[]";
 
-  //Här kollar vi ifall det gått mer än 4 timmar sedan djuret matats
-  function checkTime() {
-    if (timeAnimalWasFed / 1000 <= currentTime / 1000 + 4) {
-      //Testa med minuter istället för att se att beräkningen funkar!
+    let fedAnimalsString: string[] = JSON.parse(fedAnimalsFromLS);
 
-      const animalsFromLS = localStorage.getItem("animalList") || "[]";
+    if (isAnimalFed === true) {
+      fedAnimalsString.push(JSON.stringify(animalId));
 
-      const updateAnimalsFromLS: IAnimal[] = JSON.parse(animalsFromLS).map(
-        (animal: IAnimal) => {
-          if (animal.id === animalId) {
-            return { ...animal, isFed: "true" };
-          }
-        }
-      );
-      //Uppdaterar "isFed" till "true" om det gått mindre än 4 timmar
-      localStorage.setItem("animalList", JSON.stringify(updateAnimalsFromLS));
+      localStorage.setItem("fedAnimals", JSON.stringify(fedAnimalsString));
     }
-  }
+  }, [isAnimalFed]);
+
+  // //Här kollar vi ifall det gått mer än 3 timmar sedan djuret matats
+  // function checkTime() {
+  //   const animalsFromLS = localStorage.getItem("animalList") || "[]";
+
+  //   // if (timeAnimalWasFed / 1000 <= currentTime / 1000 + 3) {
+  //   //Testa med minuter istället för att se att beräkningen funkar!
+
+  //   let updateAnimalsFromLS: IAnimal[] = JSON.parse(animalsFromLS).map(
+  //     (animal: IAnimal) => {
+  //       if (animal.id === animalId) {
+  //         animal.isFed = true;
+  //         return animal;
+  //       }
+  //     }
+  //   );
+
+  //   let animalsThatHaveEaten: string[] = [];
+  //   animalsThatHaveEaten.push(JSON.stringify(animals));
+
+  //   //Uppdaterar "isFed" till "true" om det gått mindre än 4 timmar
+  //   localStorage.setItem("animalFed", JSON.stringify(animalsThatHaveEaten));
+  //   // }
+  // }
 
   //Filtrerar ut djuret vars information ska visas, via id samt skapar upp HTML för det
   let animalList = animals.filter((animal) => animal.id === animalId);
