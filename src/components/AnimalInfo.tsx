@@ -41,6 +41,9 @@ export function AnimalInfo() {
 
     if (current > timeAnimalWasFed + 3) {
       console.log("current time is larger than time animal was fed");
+      console.log(current);
+      console.log(timeAnimalWasFed);
+
       //Varför kommer jag in här?? tycker inte att current borde vara större än timeAnimalWasFed
     }
   }, [animals]);
@@ -68,10 +71,19 @@ export function AnimalInfo() {
         animal.isFed = true;
         animal.lastFed = JSON.stringify(new Date());
       }
-      let animalFeedingTime = new Date().getMilliseconds();
-      let timeAnimalWasFed = Math.floor(animalFeedingTime / (1000 * 60 * 60));
 
-      setTimeAnimalWasFed(timeAnimalWasFed);
+      //animalfeedingtime ca 500
+      let animalFeedingTime = new Date().getMilliseconds();
+      console.log("animalFeedingTime: " + animalFeedingTime);
+
+      //newTime genererar noll
+      let newTime = Math.floor(animalFeedingTime / (1000 * 60 * 60));
+
+      //New time genererar noll
+      console.log("new time: " + newTime);
+
+      setTimeAnimalWasFed(newTime);
+      //timeanimalwasfed är också noll
       console.log("time animal was fed: " + timeAnimalWasFed);
 
       updateAnimalListWhenFed.push(animal);
