@@ -24,11 +24,10 @@ export function AnimalInfo() {
   useEffect(() => {
     let animalsInLs: string = localStorage.getItem("animalList") || "[]";
 
+    //Hämtar API data via services + Sparar datat till LS
     if (animalsInLs == "[]") {
-      //Hämtar API data via services
       getAnimalService().then((response) => {
         setAnimals(response.data);
-        //Sparar även till LS från API-anropet
         localStorage.setItem("animalList", JSON.stringify(response.data));
       });
     }
@@ -36,13 +35,23 @@ export function AnimalInfo() {
   }, []);
 
   useEffect(() => {
+    animals.find((animal) => {
+      if (animal.id === animalId && animal.isFed === true) {
+        setIsAnimalFed(!isAnimalFed);
+      } else {
+      }
+    });
+  }, [animals]);
+
+  useEffect(() => {
     setCurrentTime(new Date().getTime());
   }, [currentTime]);
 
-  function hasBeenFed() {
+  //Updates list in local storage, changing isFed and lastFed
+  function feedAnimal() {
     let updateAnimalList: IAnimal[] = [];
 
-    let animal = animals.find((animal) => {
+    animals.find((animal) => {
       if (animal.id === animalId) {
         setIsAnimalFed(!isAnimalFed);
         animal.isFed = true;
@@ -51,10 +60,9 @@ export function AnimalInfo() {
       updateAnimalList.push(animal);
 
       localStorage.setItem("animalList", JSON.stringify(updateAnimalList));
-      console.log(JSON.stringify([animal]));
     });
 
-    setTimeAnimalWasFed(new Date().getTime());
+    // setTimeAnimalWasFed(new Date().getTime());
     setFeedingTime(new Date());
     setIsAnimalFed(true);
   }
@@ -69,7 +77,7 @@ export function AnimalInfo() {
         <p>Födelsedag: {animal.yearOfBirth}</p>
         <p>{animal.longDescription}</p>
         <img src={animal.imageUrl} alt="" width={100} height={100} />
-        <button onClick={hasBeenFed} disabled={isAnimalFed}>
+        <button onClick={feedAnimal} disabled={isAnimalFed}>
           Mata
         </button>
         <div>

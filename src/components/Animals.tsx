@@ -16,16 +16,16 @@ export function Animals() {
     if (animalsInLs === "[]") {
       getAnimalService().then((response) => {
         setAnimals(response.data);
-        console.log("vafan");
+
+        localStorage.setItem("animalList", JSON.stringify(response.data));
       });
-    } else {
-      console.log("här då");
     }
+    // else {
+    //   console.log("här då");
+    // }
   }, []);
 
-  // localStorage.setItem("animalList", JSON.stringify(animals));
-
-  //mMappar igenom animalList och ger varje animal en länk
+  //Mappar igenom animalList och ger varje animal en länk
   let animalsList = animals.map((animal: IAnimal) => {
     let animalLink = `/animal-info/${animal.id}`;
     return (
