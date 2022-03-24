@@ -21,7 +21,6 @@ export function AnimalInfo() {
   }, []);
 
   //Här kollar vi om info finns i LS, annars hämtar vi från API
-
   useEffect(() => {
     let animalsInLs: string = localStorage.getItem("animalList") || "[]";
 
@@ -41,47 +40,20 @@ export function AnimalInfo() {
   }, [currentTime]);
 
   function hasBeenFed() {
+    let animal = animals.find((animal) => {
+      if (animal.id === animalId) {
+        setIsAnimalFed(!isAnimalFed);
+        animal.isFed = true;
+        animal.lastFed = JSON.stringify(new Date());
+      }
+      localStorage.setItem("animalList", JSON.stringify(animal));
+      console.log(animal);
+    });
+
     setTimeAnimalWasFed(new Date().getTime());
     setFeedingTime(new Date());
     setIsAnimalFed(true);
-
-    // checkTime();
   }
-  useEffect(() => {
-    let fedAnimalsFromLS = localStorage.getItem("fedAnimals") || "[]";
-
-    let fedAnimalsString: string[] = JSON.parse(fedAnimalsFromLS);
-
-    if (isAnimalFed === true) {
-      fedAnimalsString.push(JSON.stringify(animalId));
-
-      localStorage.setItem("fedAnimals", JSON.stringify(fedAnimalsString));
-    }
-  }, [isAnimalFed]);
-
-  // //Här kollar vi ifall det gått mer än 3 timmar sedan djuret matats
-  // function checkTime() {
-  //   const animalsFromLS = localStorage.getItem("animalList") || "[]";
-
-  //   // if (timeAnimalWasFed / 1000 <= currentTime / 1000 + 3) {
-  //   //Testa med minuter istället för att se att beräkningen funkar!
-
-  //   let updateAnimalsFromLS: IAnimal[] = JSON.parse(animalsFromLS).map(
-  //     (animal: IAnimal) => {
-  //       if (animal.id === animalId) {
-  //         animal.isFed = true;
-  //         return animal;
-  //       }
-  //     }
-  //   );
-
-  //   let animalsThatHaveEaten: string[] = [];
-  //   animalsThatHaveEaten.push(JSON.stringify(animals));
-
-  //   //Uppdaterar "isFed" till "true" om det gått mindre än 4 timmar
-  //   localStorage.setItem("animalFed", JSON.stringify(animalsThatHaveEaten));
-  //   // }
-  // }
 
   //Filtrerar ut djuret vars information ska visas, via id samt skapar upp HTML för det
   let animalList = animals.filter((animal) => animal.id === animalId);
@@ -110,3 +82,39 @@ export function AnimalInfo() {
 
   return <>{animalToPrint}</>;
 }
+
+// //Här kollar vi ifall det gått mer än 3 timmar sedan djuret matats
+// function checkTime() {
+//   const animalsFromLS = localStorage.getItem("animalList") || "[]";
+
+//   // if (timeAnimalWasFed / 1000 <= currentTime / 1000 + 3) {
+//   //Testa med minuter istället för att se att beräkningen funkar!
+
+//   let updateAnimalsFromLS: IAnimal[] = JSON.parse(animalsFromLS).map(
+//     (animal: IAnimal) => {
+//       if (animal.id === animalId) {
+//         animal.isFed = true;
+//         return animal;
+//       }
+//     }
+//   );
+
+//   let animalsThatHaveEaten: string[] = [];
+//   animalsThatHaveEaten.push(JSON.stringify(animals));
+
+//   //Uppdaterar "isFed" till "true" om det gått mindre än 4 timmar
+//   localStorage.setItem("animalFed", JSON.stringify(animalsThatHaveEaten));
+//   // }
+// }
+
+// useEffect(() => {
+//   // let fedAnimalsFromLS = localStorage.getItem("fedAnimals") || "[]";
+//   // let fedAnimalsString: string[] = JSON.parse(fedAnimalsFromLS);
+//   // // setIsAnimalFed(true);
+
+//   // if (isAnimalFed === true) {
+//   //   //Ändra på denna ?? Så den tittar i LS för att se om animal id ligger där, och om ID ligger där så ska den sätta isAnimalFed === true så att knappen är utgråad. Om det gått mer ön 3 timmar ska isAnimalFed===false. Sen kanske den behöver ligga i en annan useEffect, eller bara ha en tom lista på slutet
+//   //   fedAnimalsString.push(JSON.stringify(animalId));
+//   // }
+//   // localStorage.setItem("fedAnimals", JSON.stringify(fedAnimalsString));
+// }, []);
