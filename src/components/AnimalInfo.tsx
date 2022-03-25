@@ -4,6 +4,7 @@ import { IAnimal } from "../models/IAnimal";
 import { getAnimalService } from "../services/getAnimalService";
 import { Button } from "./styledComponents/Button";
 import { DivForExtendedInfo } from "./styledComponents/DivForExtendedInfo";
+import { Section } from "./styledComponents/Section";
 
 export function AnimalInfo() {
   const [animals, setAnimals] = useState<IAnimal[]>([]);
@@ -74,25 +75,28 @@ export function AnimalInfo() {
   let animalInformationToPrint = filterOutCurrentAnimal.map(
     (animal: IAnimal) => {
       return (
-        <DivForExtendedInfo key={animal.latinName}>
-          <h1>{animal.name}</h1>
-          <p>Latin-namn: {animal.latinName}</p>
-          <p>Födelsedag: {animal.yearOfBirth}</p>
-          <p>Eventuella mediciner: {animal.medicine}</p>
-          <p>{animal.longDescription}</p>
-          <img src={animal.imageUrl} alt="" width={300} />
-          <Button onClick={feedAnimal} disabled={isAnimalFed}>
-            Mata {animal.name}
-          </Button>
-          <div>
-            {isAnimalFed && (
-              <p>
-                {animal.name} matades senast klockan
-                {" " + JSON.parse(animal.lastFed)}
-              </p>
-            )}
-          </div>
-        </DivForExtendedInfo>
+        <Section key={animal.latinName}>
+          <DivForExtendedInfo>
+            <h1>{animal.name}</h1>
+            <p>Latin-namn: {animal.latinName}</p>
+            <p>Födelsedag: {animal.yearOfBirth}</p>
+            <p>Eventuella mediciner: {animal.medicine}</p>
+            <p>{animal.longDescription}</p>
+            <img src={animal.imageUrl} alt="" width={300} />
+            <br />
+            <Button onClick={feedAnimal} disabled={isAnimalFed}>
+              Mata {animal.name}
+            </Button>
+            <div>
+              {isAnimalFed && (
+                <p>
+                  {animal.name} matades senast klockan
+                  {" " + JSON.parse(animal.lastFed)}
+                </p>
+              )}
+            </div>
+          </DivForExtendedInfo>
+        </Section>
       );
     }
   );

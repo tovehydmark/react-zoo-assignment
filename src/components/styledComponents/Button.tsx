@@ -5,19 +5,20 @@ interface IButtonProps {
 
 export const Button = styled.button`
   padding: 10px;
-  background-color: #035773;
+  margin: 10px auto 20px;
+  background-color: #246065;
   color: white;
   font-size: 1rem;
-  border: #023d4f 2px solid;
+  border: #084558 2px solid;
   border-radius: 10px;
   cursor: pointer;
   a {
     text-decoration: none;
-    color: #e7b306;
+    color: white;
   }
 
   :hover {
-    background-color: #217864;
+    background-color: #103b40;
     border: #024f46 2px solid;
   }
   :disabled {
