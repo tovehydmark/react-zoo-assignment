@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/tovehydmark/react-zoo-assignment/static/css/main.e6c13ad2.css",
+    "main.js": "/tovehydmark/react-zoo-assignment/static/js/main.51b502cd.js",
+    "static/js/787.ac8772bc.chunk.js": "/tovehydmark/react-zoo-assignment/static/js/787.ac8772bc.chunk.js",
+    "index.html": "/tovehydmark/react-zoo-assignment/index.html",
+    "main.e6c13ad2.css.map": "/tovehydmark/react-zoo-assignment/static/css/main.e6c13ad2.css.map",
+    "main.51b502cd.js.map": "/tovehydmark/react-zoo-assignment/static/js/main.51b502cd.js.map",
+    "787.ac8772bc.chunk.js.map": "/tovehydmark/react-zoo-assignment/static/js/787.ac8772bc.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.51b502cd.js"
+  ]
+}
