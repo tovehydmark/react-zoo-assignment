@@ -1,17 +1,17 @@
 import { Link, Outlet } from "react-router-dom";
+import { Nav } from "./styledComponents/Nav";
 
 export const Layout = () => {
   return (
     <>
       <header>
-        <nav>
+        <Nav>
           <ul>
             <li>
-              {" "}
               <Link to={"/"}>Hem</Link>
             </li>
           </ul>
-        </nav>
+        </Nav>
       </header>
       <main>
         <Outlet></Outlet>
