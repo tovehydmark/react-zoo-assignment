@@ -1,4 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+interface IButtonProps {
+  primary?: boolean;
+}
 
 export const Button = styled.button`
   padding: 10px;
@@ -8,9 +11,19 @@ export const Button = styled.button`
   border: #023d4f 2px solid;
   border-radius: 10px;
   cursor: pointer;
+  a {
+    text-decoration: none;
+    color: #e7b306;
+  }
 
   :hover {
-    background-color: white;
-    color: #023d4f;
+    background-color: #217864;
+    border: #024f46 2px solid;
   }
+
+  ${(props: IButtonProps) =>
+    props.primary &&
+    css`
+      background-color: grey;
+    `}
 `;
