@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IAnimal } from "../models/IAnimal";
 import { getAnimalService } from "../services/getAnimalService";
+import { Button } from "./styledComponents/Button";
+import { DivForExtendedInfo } from "./styledComponents/DivForExtendedInfo";
 
 export function AnimalInfo() {
   const [animals, setAnimals] = useState<IAnimal[]>([]);
@@ -72,16 +74,16 @@ export function AnimalInfo() {
   let animalInformationToPrint = filterOutCurrentAnimal.map(
     (animal: IAnimal) => {
       return (
-        <div key={animal.latinName}>
+        <DivForExtendedInfo key={animal.latinName}>
           <h1>{animal.name}</h1>
           <p>Latin-namn: {animal.latinName}</p>
           <p>Födelsedag: {animal.yearOfBirth}</p>
           <p>Eventuella mediciner: {animal.medicine}</p>
           <p>{animal.longDescription}</p>
           <img src={animal.imageUrl} alt="" width={300} />
-          <button onClick={feedAnimal} disabled={isAnimalFed}>
+          <Button onClick={feedAnimal} disabled={isAnimalFed}>
             Mata {animal.name}
-          </button>
+          </Button>
           <div>
             {isAnimalFed && (
               <p>
@@ -90,7 +92,7 @@ export function AnimalInfo() {
               </p>
             )}
           </div>
-        </div>
+        </DivForExtendedInfo>
       );
     }
   );

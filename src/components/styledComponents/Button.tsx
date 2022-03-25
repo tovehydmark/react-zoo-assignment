@@ -20,6 +20,12 @@ export const Button = styled.button`
     background-color: #217864;
     border: #024f46 2px solid;
   }
+  :disabled {
+    background-color: grey;
+    border: grey;
+    color: lightgray;
+    cursor: auto;
+  }
 
   ${(props: IButtonProps) =>
     props.primary &&
