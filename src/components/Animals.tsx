@@ -3,6 +3,7 @@ import { IAnimal } from "../models/IAnimal";
 import { Animal } from "./Animal";
 import { getAnimalService } from "../services/getAnimalService";
 import { Link } from "react-router-dom";
+import { Button } from "./styledComponents/Button";
 
 export function Animals() {
   const [animals, setAnimals] = useState<IAnimal[]>([]);
@@ -29,9 +30,9 @@ export function Animals() {
       <div key={animal.latinName}>
         <Animal animal={animal}></Animal>
 
-        <button key={animal.id}>
+        <Button key={animal.id}>
           <Link to={animalLink}>Visa mer information om {animal.name}</Link>
-        </button>
+        </Button>
       </div>
     );
   });

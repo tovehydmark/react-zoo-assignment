@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IAnimal } from "../models/IAnimal";
 import { getAnimalService } from "../services/getAnimalService";
+import { Button } from "./styledComponents/Button";
 
 export function AnimalInfo() {
   const [animals, setAnimals] = useState<IAnimal[]>([]);
@@ -79,9 +80,9 @@ export function AnimalInfo() {
           <p>Eventuella mediciner: {animal.medicine}</p>
           <p>{animal.longDescription}</p>
           <img src={animal.imageUrl} alt="" width={100} height={100} />
-          <button onClick={feedAnimal} disabled={isAnimalFed}>
+          <Button onClick={feedAnimal} disabled={isAnimalFed}>
             Mata {animal.name}
-          </button>
+          </Button>
           <div>
             {isAnimalFed && (
               <p>
