@@ -4,6 +4,7 @@ import { Animal } from "./Animal";
 import { getAnimalService } from "../services/getAnimalService";
 import { Link } from "react-router-dom";
 import { Button } from "./styledComponents/Button";
+import { Section } from "./styledComponents/Section";
 
 export function Animals() {
   const [animals, setAnimals] = useState<IAnimal[]>([]);
@@ -37,5 +38,9 @@ export function Animals() {
     );
   });
 
-  return <>{animalsList}</>;
+  return (
+    <>
+      <Section>{animalsList}</Section>
+    </>
+  );
 }

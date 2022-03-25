@@ -1,4 +1,5 @@
 import { IAnimal } from "../models/IAnimal";
+import { Div } from "./styledComponents/Div";
 
 interface IAnimalProps {
   animal: IAnimal;
@@ -7,10 +8,10 @@ interface IAnimalProps {
 export function Animal(props: IAnimalProps) {
   return (
     <>
-      <div>
+      <Div>
         <h1>{props.animal.name}</h1>
         <p>{props.animal.shortDescription}</p>
-      </div>
+      </Div>
     </>
   );
 }

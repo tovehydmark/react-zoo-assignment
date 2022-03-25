@@ -78,7 +78,7 @@ export function AnimalInfo() {
           <p>Födelsedag: {animal.yearOfBirth}</p>
           <p>Eventuella mediciner: {animal.medicine}</p>
           <p>{animal.longDescription}</p>
-          <img src={animal.imageUrl} alt="" width={100} height={100} />
+          <img src={animal.imageUrl} alt="" width={300} />
           <button onClick={feedAnimal} disabled={isAnimalFed}>
             Mata {animal.name}
           </button>
