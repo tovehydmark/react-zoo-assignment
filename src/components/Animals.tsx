@@ -20,9 +20,6 @@ export function Animals() {
         localStorage.setItem("animalList", JSON.stringify(response.data));
       });
     }
-    // else {
-    //   console.log("här då");
-    // }
   }, []);
 
   //Mappar igenom animalList och ger varje animal en länk

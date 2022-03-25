@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { IAnimal } from "../models/IAnimal";
-import { AnimalInfo } from "./AnimalInfo";
 
 interface IAnimalProps {
   animal: IAnimal;

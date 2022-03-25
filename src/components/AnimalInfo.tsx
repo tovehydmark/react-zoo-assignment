@@ -9,8 +9,7 @@ export function AnimalInfo() {
   let params = useParams();
 
   const [isAnimalFed, setIsAnimalFed] = useState<boolean>(false);
-  const [timeAnimalWasFed, setTimeAnimalWasFed] = useState<number>(0); //För att enkelt beräkna tiden från djuret matats till nuvarande tid, satt i millisekunder
-  // const [feedingTime, setFeedingTime] = useState<string>(""); //För att kunna skriva ut info om när djuret matats
+
   const [currentTime, setCurrentTime] = useState<number>(0);
 
   //Här får animalId samma värde som id:t på djuret vi klickat på
@@ -20,11 +19,10 @@ export function AnimalInfo() {
     }
   }, []);
 
-  //Här kollar vi om info finns i LS, annars hämtar vi från API
+  //Kontrollerar om info finns i LS, annars hämtar vi från API + sparar i LS
   useEffect(() => {
     let animalsInLs: string = localStorage.getItem("animalList") || "[]";
 
-    //Hämtar API data via services + Sparar datat till LS
     if (animalsInLs == "[]") {
       getAnimalService().then((response) => {
         setAnimals(response.data);
@@ -33,20 +31,6 @@ export function AnimalInfo() {
     }
     setAnimals(JSON.parse(animalsInLs));
   }, []);
-
-  useEffect(() => {
-    setCurrentTime(new Date().getMilliseconds());
-
-    let current = Math.floor(currentTime / (1000 * 60 * 60));
-
-    if (current > timeAnimalWasFed + 3) {
-      console.log("current time is larger than time animal was fed");
-      console.log(current);
-      console.log(timeAnimalWasFed);
-
-      //Varför kommer jag in här?? tycker inte att current borde vara större än timeAnimalWasFed
-    }
-  }, [animals]);
 
   useEffect(() => {
     animals.find((animal) => {
@@ -61,7 +45,7 @@ export function AnimalInfo() {
     setCurrentTime(new Date().getTime());
   }, [currentTime]);
 
-  //Updates list in local storage, changing isFed and lastFed
+  //Updaterar animalList i local storage vid matning, ändrar isFed and lastFed
   function feedAnimal() {
     let updateAnimalListWhenFed: IAnimal[] = [];
 
@@ -72,20 +56,6 @@ export function AnimalInfo() {
         animal.lastFed = JSON.stringify(new Date());
       }
 
-      //animalfeedingtime ca 500
-      let animalFeedingTime = new Date().getMilliseconds();
-      console.log("animalFeedingTime: " + animalFeedingTime);
-
-      //newTime genererar noll
-      let newTime = Math.floor(animalFeedingTime / (1000 * 60 * 60));
-
-      //New time genererar noll
-      console.log("new time: " + newTime);
-
-      setTimeAnimalWasFed(newTime);
-      //timeanimalwasfed är också noll
-      console.log("time animal was fed: " + timeAnimalWasFed);
-
       updateAnimalListWhenFed.push(animal);
 
       localStorage.setItem(
@@ -95,7 +65,7 @@ export function AnimalInfo() {
     });
   }
 
-  //Filtrerar ut djuret vars information ska visas, via id samt skapar upp HTML för det
+  //Filtrerar ut djuret vars information ska visas, via id samt skapar upp HTML för att visa information om djuret
   let filterOutCurrentAnimal = animals.filter(
     (animal) => animal.id === animalId
   );
@@ -106,10 +76,11 @@ export function AnimalInfo() {
           <h1>{animal.name}</h1>
           <p>Latin-namn: {animal.latinName}</p>
           <p>Födelsedag: {animal.yearOfBirth}</p>
+          <p>Eventuella mediciner: {animal.medicine}</p>
           <p>{animal.longDescription}</p>
           <img src={animal.imageUrl} alt="" width={100} height={100} />
           <button onClick={feedAnimal} disabled={isAnimalFed}>
-            Mata
+            Mata {animal.name}
           </button>
           <div>
             {isAnimalFed && (
