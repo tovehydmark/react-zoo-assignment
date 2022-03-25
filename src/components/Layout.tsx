@@ -10,9 +10,6 @@ export const Layout = () => {
               {" "}
               <Link to={"/"}>Hem</Link>
             </li>
-            <li>
-              <Link to={"/animal-info/:id"}></Link>
-            </li>
           </ul>
         </nav>
       </header>
